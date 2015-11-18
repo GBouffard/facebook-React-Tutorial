@@ -15,7 +15,7 @@ var CommentBox = React.createClass({
 // Also <ClassName /> which I never saw before means calling that ClassName
 
 // ...and when with attributes, it's:
-// <ClassName attributeName='Blabla'> Blabla2 </ClassName>
+// <ClassName attributeKey='Blabla'> Blabla2 </ClassName>
 
 var CommentList = React.createClass({
   render: function() {
@@ -42,14 +42,26 @@ var CommentForm = React.createClass({
 // attributes can be accessed with this.props.key and any nested elements as this.props.children
 // this will allow to re-use the same code for each unique comment.
 
+// marked is a library defined as script in index.html
+// with {marked(this.props.children.toString())} we are calling the marked library
+
+// React is protecting us from an XSS (Cross-site scripting) attack, therefore
+// rawMarkup with {sanitize: true} is to avoid  "<p>This is <em>another</em> comment</p>"
+// It's being used in the tutorial but the framework warns us not to use it.
+
 var Comment = React.createClass({
+  rawMarkup: function() {
+    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    return { __html: rawMarkup };
+  },
+
   render: function() {
     return (
       <div className="comment">
         <h2 className="commentAuthor">
           {this.props.author}
         </h2>
-        {this.props.children}
+        <span dangerouslySetInnerHTML={this.rawMarkup()} />
       </div>
     );
   }
