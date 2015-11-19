@@ -24,12 +24,28 @@
 
 // loadCommentsFromServer is a good symtax example on how to call an API with $.ajax, success and errors
 
+// in handleCommentSubmit, we added type: 'POST' because we write in the JSon object
+
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  handleCommentSubmit: function(comment) {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      data: comment,
       success: function(data) {
         this.setState({data: data});
       }.bind(this),
@@ -50,7 +66,7 @@ var CommentBox = React.createClass({
       <div className="commentBox">
         <h1>Comments</h1>
         <CommentList data={this.state.data} />
-        <CommentForm />
+        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
   }
@@ -60,6 +76,8 @@ var CommentBox = React.createClass({
 
 // In React & in return <ThisName /> or <ThisName attribute1=value2> child Blabla </ThisName>
 // means that we are rendering thisName class
+
+// In a form, onFormNameSubmit= defines what happens when submitted (like onCommentSubmit)
 
 var CommentList = React.createClass({
   render: function() {
@@ -79,13 +97,52 @@ var CommentList = React.createClass({
 });
 
 // In this example each comment has an author and key attributes, and {comment.text} is displayed
+// this.state is used to save the user's input as it is entered.
+// The onChange prop/callbacks works across browsers to fire in response to user interactions
+// we set key/values with this.setState({key: argument.target.value});
+
+// in the form, onSubmit={} defines what happens when Submit is clicked.
+// preventDefault() is to prevent the browser's default action of submitting the form.
+
+// the String trim() method Remove whitespace from both sides of a string.
 
 var CommentForm = React.createClass({
+  getInitialState: function() {
+    return {author: '', text: ''};
+  },
+  handleAuthorChange: function(e) {
+    this.setState({author: e.target.value});
+  },
+  handleTextChange: function(e) {
+    this.setState({text: e.target.value});
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var author = this.state.author.trim();
+    var text = this.state.text.trim();
+    if (!text || !author) {
+      return;
+    }
+    this.props.onCommentSubmit({author: author, text: text});
+    this.setState({author: '', text: ''});
+  },
   render: function() {
     return (
-      <div className="commentForm">
-        Hello, world! I am a CommentForm.
-      </div>
+      <form className="commentForm" onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          placeholder="Your name"
+          value={this.state.author}
+          onChange={this.handleAuthorChange}
+        />
+        <input
+          type="text"
+          placeholder="Say something..."
+          value={this.state.text}
+          onChange={this.handleTextChange}
+        />
+        <input type="submit" value="Post" />
+      </form>
     );
   }
 });
