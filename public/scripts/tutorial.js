@@ -42,12 +42,25 @@ var CommentBox = React.createClass({
     return (
       <div className="commentBox">
         <h1>Comments</h1>
+        <MessagesCounter myCounter={this.state.data.length}/>
         <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
   }
 });
+
+// Added a Counter as a new task.
+var MessagesCounter = React.createClass({ 
+  render: function() {
+    return (
+      <div className="messagesCounter">
+        Number of Messages: {this.props.myCounter}
+      </div>
+    ); 
+  }
+});
+
 
 var CommentList = React.createClass({
   render: function() {
