@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,IAAK;EACH,KAAK,EAAE,OAAO;;ACIhB,IAAK;EACH,IAAI,EAAE,0BAAgB;EACtB,gBAAgB,EAJL,OAAO",
+"sources": ["tryingAPartial.scss","testingSass.scss"],
+"names": [],
+"file": "testingSass.css"
+}

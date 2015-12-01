@@ -1,0 +1,9 @@
+@import 'tryingAPartial';
+
+$font-stack:    Helvetica, sans-serif;
+$back-color: #E4DAFF;
+
+body {
+  font: 100% $font-stack;
+  background-color: $back-color;
+}
