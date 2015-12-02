@@ -1,4 +1,4 @@
-var CommentBox = React.createClass({
+var App = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
       url: this.props.url,
@@ -40,8 +40,12 @@ var CommentBox = React.createClass({
   },
   render: function() {
     return (
-      <div className="commentBox">
-        <h1>Comments</h1>
+      <div
+        className="app">
+        <h1 
+          className="app__comments-header">
+          Comments
+        </h1>
         <MessagesCounter myCounter={this.state.data.length}/>
         <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
@@ -54,7 +58,8 @@ var CommentBox = React.createClass({
 var MessagesCounter = React.createClass({ 
   render: function() {
     return (
-      <div className="messagesCounter">
+      <div 
+        className="app__messages-counter">
         Number of Messages: {this.props.myCounter}
       </div>
     ); 
@@ -72,7 +77,8 @@ var CommentList = React.createClass({
       );
     });
     return (
-      <div className="commentList">
+      <div 
+        className="commentList">
         {commentNodes}
       </div>
     );
@@ -101,20 +107,29 @@ var CommentForm = React.createClass({
   },
   render: function() {
     return (
-      <form className="commentForm" onSubmit={this.handleSubmit}>
+      <form
+        className="commentForm"
+        onSubmit={this.handleSubmit}>
+
         <input
           type="text"
           placeholder="Your name"
           value={this.state.author}
           onChange={this.handleAuthorChange}
         />
+
         <input
           type="text"
           placeholder="Say something..."
           value={this.state.text}
           onChange={this.handleTextChange}
         />
-        <input type="submit" value="Post" />
+
+        <input 
+          type="submit" 
+          value="Enter Comment" 
+          className="newCommentButton"
+        />
       </form>
     );
   }
@@ -128,10 +143,14 @@ var Comment = React.createClass({
 
   render: function() {
     return (
-      <div className="comment">
-        <h2 className="commentAuthor">
+      <div 
+        className="commentList__comment">
+
+        <div
+          className="commentList__comment-author">
           {this.props.author}
-        </h2>
+        </div>
+
         <span dangerouslySetInnerHTML={this.rawMarkup()} />
       </div>
     );
@@ -140,6 +159,6 @@ var Comment = React.createClass({
 
 
 ReactDOM.render(
-  <CommentBox url="/api/comments" pollInterval={2000} />,
+  <App url="/api/comments" pollInterval={2000} />,
   document.getElementById('content')
 );

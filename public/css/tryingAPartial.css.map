@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,IAAK;EACH,KAAK,EAAE,OAAO",
-"sources": ["tryingAPartial.scss"],
-"names": [],
-"file": "tryingAPartial.css"
-}
