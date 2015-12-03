@@ -47,6 +47,7 @@ var App = React.createClass({
           Comments
         </h1>
         <MessagesCounter myCounter={this.state.data.length}/>
+        <MostRecentPoster data={this.state.data}/>
         <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
@@ -56,16 +57,55 @@ var App = React.createClass({
 
 // Added a Counter as a new task.
 var MessagesCounter = React.createClass({ 
+
+
   render: function() {
     return (
       <div 
-        className="app__messages-counter">
+        className="messages-counter">
         Number of Messages: {this.props.myCounter}
       </div>
     ); 
   }
 });
 
+// Added a method that returns the most frequent poster
+var MostRecentPoster = React.createClass({
+
+  returnTheMostFrequentPoster: function() {
+    var authorsList = [];
+    // we make an array with all the authors
+    for (var i = 0; i < this.props.data.length; i++) {
+      authorsList.push(this.props.data[i].author);
+    }
+    // we make a hash with all the authors as key and their ocurrences as values.
+    var authorsOccurences = {};
+    for (var j = 0; j < authorsList.length; j++) {
+      authorsOccurences[authorsList[j]] = (authorsOccurences[authorsList[j]] || 0) + 1;
+    }
+    // we find the maximum number of posts made
+    var maximum = 0;
+    for (var key in authorsOccurences) {
+      if (authorsOccurences[key] > maximum) { maximum = authorsOccurences[key] }
+    }
+    // we store the poster(s) who have made that maximum of posts in an array that we return
+    var mostFrequentPosters = []
+    for (var key in authorsOccurences) {
+      if (authorsOccurences[key] == maximum) { mostFrequentPosters.push(key) }
+    }
+    return mostFrequentPosters.toString();
+  },
+
+  render: function() {
+    var mfp = this.returnTheMostFrequentPoster();
+    return (
+      <div 
+        className="most-recent-poster">
+        Most Frequent Poster(s): {mfp}
+      </div>
+    ); 
+  }
+});
 
 var CommentList = React.createClass({
   render: function() {
@@ -120,7 +160,7 @@ var CommentForm = React.createClass({
 
         <input
           type="text"
-          placeholder="Say something..."
+          placeholder="Your comment..."
           value={this.state.text}
           onChange={this.handleTextChange}
         />

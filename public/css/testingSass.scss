@@ -6,6 +6,7 @@ $app-background-color: #9B36FF;
 $header-and-counter-color: #D8BB00;
 $commentList-background-color: #FAFFD0;
 $comment-text-color: black;
+$most-recent-poster-color: white;
 
 @mixin myFirstMixin ($myOptionalArgument: 20px, $borderColor: $header-and-counter-color) {
   border: ($myOptionalArgument / 5) solid $borderColor;
@@ -38,8 +39,12 @@ body {
   text-align: center;
 }
 
-.app__messages-counter {
+.messages-counter {
   @extend %myFirstPlaceHolder;
+}
+
+.most-recent-poster {
+  color: $most-recent-poster-color;
 }
 
 .commentList {

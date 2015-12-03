@@ -1,7 +1,7 @@
 body {
   color: #A90000; }
 
-.app__comments-header, .app__messages-counter {
+.app__comments-header, .messages-counter {
   color: #D8BB00; }
 
 body {
@@ -24,6 +24,9 @@ body {
   border-radius: 10px;
   padding: 10px 10px;
   text-align: center; }
+
+.most-recent-poster {
+  color: white; }
 
 .commentList {
   background-color: #FAFFD0;
